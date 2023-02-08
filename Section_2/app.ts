@@ -1,26 +1,32 @@
-const person: {
-  name: string;
-  age: number;
-  hobbies: string[];
-  role: [number, string]; //tuple type
-} = {
-  name: "jwoo",
-  age: 24,
-  hobbies: ["cooking", "reading"],
-  role: [2, "author"],
-};
+//union 타입 사용
+//런타임 타입 검사가 필요하기도 함
 
-console.log(person.name);
+//타입 앨리어스
+type Combinable = number | string;
+type ConversionDescriptor = "as-number" | "as-text";
 
-for (const hobby of person.hobbies) {
-  console.log(hobby.toUpperCase());
+function combine(
+  input1: Combinable,
+  input2: Combinable,
+  resultConversion: ConversionDescriptor
+) {
+  let result;
+  if (
+    (typeof input1 === "number" && typeof input2 === "number") ||
+    resultConversion === "as-number"
+  ) {
+    result = +input1 + +input2;
+  } else {
+    result = input1.toString() + input2.toString();
+  }
+  return result;
 }
 
-//객체 타입
-//키 - 타입 쌍
-//어딘가에서 사용되는 객체 타입을 설명하기 위해 작성되는 것
-//객체 타입의 타입스크립트 표현일 뿐 실제 객체가 아님
+const combineAges = combine(30, 26, "as-number");
+console.log(combineAges);
 
-//튜플
-//길이가 고정된 특수 배열, TS에서 추가됨
-//배열의 길이, 타입까지 미리 지정
+const combineNames = combine("jwoo", "ellie", "as-text");
+console.log(combineNames);
+
+const combineStringAges = combine("30", "26", "as-number");
+console.log(combineStringAges);
