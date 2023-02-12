@@ -4,7 +4,7 @@ TS 공부용
 📎 https://kmooc.udemy.com/course/best-typescript-21/learn/lecture/
 
 - [x] Section 1
-- [ ] Section 2
+- [x] Section 2
 - [ ] Section 3
 - [ ] Section 4
 - [ ] Section 5
