@@ -15,10 +15,6 @@ class Department {
     static createEmployee(name) {
         return { name: name };
     }
-    //메서드
-    describe() {
-        console.log(`Department (${this.id}): ${this.name}`);
-    }
     addEmployee(employee) {
         this.employees.push(employee);
     }
@@ -28,15 +24,15 @@ class Department {
     }
 }
 //es6 - Class 문법 지원
-const accounting = new Department("d1", "Accounting");
-accounting.addEmployee("jwoo");
-accounting.addEmployee("ellie");
+//const accounting = new Department("d1", "Accounting");
+// accounting.addEmployee("jwoo");
+// accounting.addEmployee("ellie");
 //not good -> private 키워드로 보호
 //accounting.employees[2] = "anna";
-accounting.name = "NEW_NAME";
+//accounting.name = "NEW_NAME";
 //javascript - public, private를 구분하지 않음, TS만이 지원
-accounting.describe();
-accounting.printEmployeeInformation();
+// accounting.describe();
+// accounting.printEmployeeInformation();
 // const accountingCopy = { name: "marketing", describe: accounting.describe };
 // accountingCopy.describe();
 //describe 함수 자체를 전달함
@@ -46,6 +42,9 @@ class ITDepartment extends Department {
         //this 키워드 사용전에 호출해 주어야 함
         super(id, "IT");
         this.admins = admins;
+    }
+    describe() {
+        console.log("IT Department - ID: " + this.id);
     }
 }
 const employee1 = Department.createEmployee("max");
@@ -72,6 +71,16 @@ class AccountingDepartment extends Department {
         this.reports = reports;
         this.lastReport = reports[0];
     }
+    //정적 메서드
+    static getInstance() {
+        //클래스 자체에 접근할 수 있게 해줌
+        if (AccountingDepartment.instance) {
+            return this.instance;
+        }
+        //인스턴스가 없다면 새로 만들고 반환
+        this.instance = new AccountingDepartment("d2", []);
+        return this.instance;
+    }
     //메서드 오버라이딩
     addEmployee(name) {
         if (name === "Max") {
@@ -85,10 +94,22 @@ class AccountingDepartment extends Department {
         this.reports.push(text);
         this.lastReport = text;
     }
+    describe() {
+        console.log("Accounting Department - ID: " + this.id);
+    }
 }
-const newAccounting = new AccountingDepartment("d2", []);
+//const newAccounting = new AccountingDepartment("d2", []);
+const newAccounting = AccountingDepartment.getInstance();
 //setter로 접근
 newAccounting.mostRecentReport = "year end report";
 newAccounting.addReport("report");
 //getter로 프로퍼티에 접근
 console.log(newAccounting.mostRecentReport);
+newAccounting.describe();
+//추상 메서드
+//-> 추상 클래스 안에서만 선언 가능
+//상속 받은 모든 클래스들이 추상 메서드를 정의해야 함.
+//추상 클래스는 인스턴스화 될 수 없음
+//싱글턴 & 개인 생성자
+//-> 클래스에 대해 하나의 인스턴스만 만들 수 있도록
+//정적 메서드를 통해 구현
